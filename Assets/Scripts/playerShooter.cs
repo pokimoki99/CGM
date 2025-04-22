@@ -88,7 +88,7 @@ public class playerShooter : NetworkBehaviour
         {
             projectileObj.GetComponent<ProjectileCode>().Initialize(transform.forward * projectileSpeed);
             projectileObj.GetComponent<ProjectileCode>().damage = (int)(projectileDamage + playerStats.playerStrength);
-            projectileObj.GetComponent<ProjectileCode>().lifeTime = projectileLifespan;
+            projectileObj.GetComponent<ProjectileCode>().maxDistance = projectileLifespan;
             if (gameObject.GetComponent<Rigidbody>().linearVelocity.magnitude> 0)
             {
                 projectileObj.GetComponent<ProjectileCode>().damage = (int)(projectileDamage + playerStats.playerStrength)*2;

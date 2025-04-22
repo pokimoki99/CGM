@@ -6,8 +6,8 @@ public class RNGSystem : NetworkBehaviour
 {
     public string rarity, weaponType;
     public GameObject[] weapons;
-    float damage, fireRate;
-    int ammo, rarityMultiplier;
+    float damage, fireRate, lifespan;
+    int ammo, rarityMultiplier, damageMultiplier;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -44,11 +44,13 @@ public class RNGSystem : NetworkBehaviour
         {
             rarity = "Epic";
             rarityMultiplier = 5;
+            damageMultiplier = 4;
         }
         else if (randomNum >= 5001 &&  randomNum <= 15000) //Rare
         {
             rarity = "Rare";
             rarityMultiplier = 3;
+            damageMultiplier = 2;
         }
         else if (randomNum >= 15001 &&  randomNum <= 40000) //Uncommon
         {
@@ -59,6 +61,7 @@ public class RNGSystem : NetworkBehaviour
         {
             rarity = "Common";
             rarityMultiplier = 1;
+            damageMultiplier = 0;
         }
         Debug.Log(rarity);
         return rarity;
@@ -69,6 +72,8 @@ public class RNGSystem : NetworkBehaviour
         if (randomNum == 0) //Rifle
         {
             weaponType = "Rifle";
+            damage = Random.Range(19, 22);
+            lifespan = 5;
         }
         else if (randomNum == 1) //Shotgun
         {
