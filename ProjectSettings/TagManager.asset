@@ -7,6 +7,7 @@ TagManager:
   - interactable
   - Spawner
   - Enemy
+  - Boss
   layers:
   - Default
   - TransparentFX
