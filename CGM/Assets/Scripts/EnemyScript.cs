@@ -17,12 +17,15 @@ public class EnemyScript : NetworkBehaviour
     [Networked] private TickTimer poisonTimer { get; set; }
     [Networked] private TickTimer bleedTimer { get; set; }
     [Networked] private TickTimer HemorrhageTimer { get; set; }
+    [Networked] private TickTimer StunTimer { get; set; }
 
     bool isHemorrhaging = false;
 
     [Networked] public int xpValue { get; set; } = 10;
     [Networked] public int health { get; set; } = 100;
     [Networked] public int damage { get; set; } = 10;
+    [Networked] public bool isAttacking { get; set; } = false;
+    [Networked] public bool isStunned { get; set; } = false;
     public static event System.Action<int> onEnemyKilled;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -57,10 +60,16 @@ public class EnemyScript : NetworkBehaviour
         if (isHemorrhaging && HemorrhageTimer.Expired(Runner))
         {
             isHemorrhaging = false;
+            HemorrhageCount = 0;
         }
         if (poisonTimer.Expired(Runner))
         {
-            enemyDamaged(poisonCount + (poisonCount * Mathf.RoundToInt((float)(0.2 + (playerExpertise / 100)))));
+            enemyDamaged((int)(poisonCount + (poisonCount * (0.2f + (playerExpertise / 100)))));
+        }
+        if (isStunned && !StunTimer.Expired(Runner))
+        {
+            agent.speed = 0;
+            StunTimer = TickTimer.CreateFromSeconds(Runner, 1f);
         }
     }
     public void enemyDamaged(int damage)
@@ -69,7 +78,7 @@ public class EnemyScript : NetworkBehaviour
         {
             if (isHemorrhaging)
             {
-                damage = (int)(damage + (damage * 0.3));
+                damage = (int)(damage + (damage * (0.3f + (HemorrhageCount / 100))));
             }    
             health -= damage;
             if (health <= 0)
@@ -96,7 +105,7 @@ public class EnemyScript : NetworkBehaviour
                 HemorrhageCount++;
                 if (!isHemorrhaging)
                 {
-                    HemorrhageTimer = TickTimer.CreateFromSeconds(Runner, 10f);
+                    HemorrhageTimer = TickTimer.CreateFromSeconds(Runner, 15f);
                 }
             }   
         }    

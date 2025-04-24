@@ -24,6 +24,12 @@ public class playerMelee : NetworkBehaviour
     Coroutine moveCorouTine;
     // Update is called once per frame
 
+    public bool isAttacking;
+    public float damage;
+    public float damageReduction;
+    public float speedReduction;
+    public int expertise = 0;
+
     private void Start()
     {
         characterTransform(characterType);
@@ -44,6 +50,19 @@ public class playerMelee : NetworkBehaviour
                     StopCoroutine(moveCorouTine);
                 }
                 characterTransform(characterType);
+                if (weaponType == "GreatSword")
+                {
+                    damage = (damage + (damage * 0.2f));
+                    damageReduction = 0.2f + (0.02f * expertise);
+                    if (damageReduction > 0.6f)
+                    {
+                        damageReduction = 0.6f;
+                    }
+                }
+                if (weaponType == "Mace")
+                {
+                    damage = (damage - (damage * 0.15f));
+                }
                 moveCorouTine = StartCoroutine(MeleeAttackArc());
 
             }

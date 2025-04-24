@@ -12,6 +12,7 @@ public class playerMovement : NetworkBehaviour
     private CharacterController _controller;
 
     public float PlayerSpeed = 2f;
+    public float Speed = 2f;
 
     public float JumpForce = 5f;
     public float GravityValue = -9.81f;
@@ -114,7 +115,14 @@ public class playerMovement : NetworkBehaviour
         }
         else
         {
-            PlayerSpeed = 10f;
+            if (melee.weaponType == "GreatSword" || melee.weaponType == "Mace")
+            {
+                PlayerSpeed = Speed - (Speed * melee.speedReduction);
+            }
+            else
+            {
+                PlayerSpeed = Speed;
+            }
         }
     }
 
@@ -165,17 +173,24 @@ public class playerMovement : NetworkBehaviour
             }
             else
             {
-                health.dealDamageRPC(damage);
-                other.GetComponent<EnemyScript>().noDrop();
+                if (other.GetComponent<EnemyScript>().isAttacking && !melee.isAttacking)//enemyAttack
+                {
+                    health.dealDamageRPC(damage - (damage * melee.damageReduction));
+                    other.GetComponent<EnemyScript>().noDrop();
 
-                if (health.Downed())
-                {
-                    PlayerSpeed = 0.1f;
-                    isDowned = true;
+                    if (health.Downed())
+                    {
+                        PlayerSpeed = 0.1f;
+                        isDowned = true;
+                    }
+                    else
+                    {
+                        PlayerSpeed = 10f;
+                    }
                 }
-                else
+                else//playerAttack
                 {
-                    PlayerSpeed = 10f;
+
                 }
             }
         }
