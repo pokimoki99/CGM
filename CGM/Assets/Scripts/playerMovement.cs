@@ -23,6 +23,7 @@ public class playerMovement : NetworkBehaviour
     public float cameraRotx, cameraRoty, cameraRotz, cameraRotBob, cameraPosx, cameraPosY, cameraPosZ = 0f; //testing values
 
     Health health;
+    playerMelee melee;
     public override void Spawned()
     {
         
@@ -34,6 +35,7 @@ public class playerMovement : NetworkBehaviour
             StartCoroutine(EnableControllerAfterDelay());
         }
         health = gameObject.GetComponent<Health>();
+        melee = gameObject.GetComponent<playerMelee>();
     }
     private IEnumerator EnableControllerAfterDelay()
     {
@@ -156,17 +158,25 @@ public class playerMovement : NetworkBehaviour
         }  
         if (other.tag == "Enemy")
         {
-            health.dealDamageRPC(10);
-            other.GetComponent<EnemyScript>().noDrop();
-
-            if (health.Downed())
+            int damage = other.GetComponent<EnemyScript>().damage;
+            if (melee.isGuarding())
             {
-                PlayerSpeed = 0.1f;
-                isDowned = true;
+                other.GetComponent<EnemyScript>().enemyDamaged(damage*2);
             }
             else
             {
-                PlayerSpeed = 10f;
+                health.dealDamageRPC(damage);
+                other.GetComponent<EnemyScript>().noDrop();
+
+                if (health.Downed())
+                {
+                    PlayerSpeed = 0.1f;
+                    isDowned = true;
+                }
+                else
+                {
+                    PlayerSpeed = 10f;
+                }
             }
         }
         if (other.tag == "Player" && HasStateAuthority)

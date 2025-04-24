@@ -9,9 +9,20 @@ public class EnemyScript : NetworkBehaviour
     GameObject closestPlayer;
     public float agentSpeed = 10;
     public RNGSystem rng;
+    public bool poison = false;
+    public float playerExpertise;
+    int poisonCount;
+    int bleedCount;
+    int HemorrhageCount;
+    [Networked] private TickTimer poisonTimer { get; set; }
+    [Networked] private TickTimer bleedTimer { get; set; }
+    [Networked] private TickTimer HemorrhageTimer { get; set; }
+
+    bool isHemorrhaging = false;
 
     [Networked] public int xpValue { get; set; } = 10;
     [Networked] public int health { get; set; } = 100;
+    [Networked] public int damage { get; set; } = 10;
     public static event System.Action<int> onEnemyKilled;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -42,17 +53,53 @@ public class EnemyScript : NetworkBehaviour
     {
         closestPlayer = FindNearestPlayer();
         agent.SetDestination(closestPlayer.transform.position);
+
+        if (isHemorrhaging && HemorrhageTimer.Expired(Runner))
+        {
+            isHemorrhaging = false;
+        }
+        if (poisonTimer.Expired(Runner))
+        {
+            enemyDamaged(poisonCount + (poisonCount * Mathf.RoundToInt((float)(0.2 + (playerExpertise / 100)))));
+        }
     }
     public void enemyDamaged(int damage)
     {
         if (Object.HasStateAuthority)
         {
+            if (isHemorrhaging)
+            {
+                damage = (int)(damage + (damage * 0.3));
+            }    
             health -= damage;
             if (health <= 0)
             {
                 Die();
             }
         }  
+    }
+    public void dotEffect(string dotType, float Expertise)
+    {
+        playerExpertise = Expertise;
+        if (dotType == "Poison")
+        {
+            poisonCount++;
+            poisonTimer = TickTimer.CreateFromSeconds(Runner, 5f);
+        }
+        if (dotType == "Bleed")
+        {
+            bleedCount++;
+            bleedTimer = TickTimer.CreateFromSeconds(Runner, 10f);
+            if (bleedCount == 10)
+            {
+                bleedCount=0;
+                HemorrhageCount++;
+                if (!isHemorrhaging)
+                {
+                    HemorrhageTimer = TickTimer.CreateFromSeconds(Runner, 10f);
+                }
+            }   
+        }    
     }
     private void Die()
     {

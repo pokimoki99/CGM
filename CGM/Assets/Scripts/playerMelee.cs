@@ -10,6 +10,7 @@ public class playerMelee : NetworkBehaviour
 
     public GameObject WeaponObject;
     public String characterType = "Melee";
+    public String weaponType = "Pistol";
     public Transform arcEndPoint;
     public int attacks = 0;
     //melee
@@ -44,11 +45,23 @@ public class playerMelee : NetworkBehaviour
                 }
                 characterTransform(characterType);
                 moveCorouTine = StartCoroutine(MeleeAttackArc());
+
             }
         }
-
-
     }
+
+    public bool isGuarding()
+    {
+        if (Input.GetButton("Fire2") && weaponType == "OH_Sword") //rightclick block
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     void characterTransform(string charType)
     {
         if (charType == "Melee")
