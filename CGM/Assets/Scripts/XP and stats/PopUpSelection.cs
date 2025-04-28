@@ -5,10 +5,10 @@ using UnityEngine.UI;
 public class PopUpSelection : MonoBehaviour
 {
 
-    public Button speed, damage, health;
     public TextMeshProUGUI levelupText;
 
     public XP_System xP_System;
+    public string popUpType;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     void Start()
@@ -19,6 +19,38 @@ public class PopUpSelection : MonoBehaviour
             xP_System = FindFirstObjectByType<XP_System>();
         }
     }
+    public void selectStrength()
+    {
+        if ( xP_System != null )
+        {
+            xP_System.RPC_IncreaseStat("Strength");
+        }
+        closePopUp();
+    }
+    public void selectAgility()
+    {
+        if ( xP_System != null )
+        {
+            xP_System.RPC_IncreaseStat("Agility");
+        }
+        closePopUp();
+    }
+    public void selectVitality()
+    {
+        if ( xP_System != null )
+        {
+            xP_System.RPC_IncreaseStat("Vitality");
+        }
+        closePopUp();
+    }
+    public void selectExpertise()
+    {
+        if ( xP_System != null )
+        {
+            xP_System.RPC_IncreaseStat("Expertise");
+        }
+        closePopUp();
+    }
     public void selectSpeed()
     {
         if ( xP_System != null )
@@ -27,19 +59,19 @@ public class PopUpSelection : MonoBehaviour
         }
         closePopUp();
     }
-    public void selectDamage()
+    public void selectMagazine_Size()
     {
         if ( xP_System != null )
         {
-            xP_System.RPC_IncreaseStat("Damage");
+            xP_System.RPC_IncreaseStat("Magazine Size");
         }
         closePopUp();
     }
-    public void selectHealth()
+    public void selectReload_Speed()
     {
         if ( xP_System != null )
         {
-            xP_System.RPC_IncreaseStat("Health");
+            xP_System.RPC_IncreaseStat("Reload Speed");
         }
         closePopUp();
     }

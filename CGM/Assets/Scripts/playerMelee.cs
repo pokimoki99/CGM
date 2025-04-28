@@ -28,7 +28,9 @@ public class playerMelee : NetworkBehaviour
     public float damage;
     public float damageReduction;
     public float speedReduction;
-    public int expertise = 0;
+
+    //attributes
+    public int strength, vitality, agility, expertise, speed;
 
     private void Start()
     {
@@ -52,6 +54,7 @@ public class playerMelee : NetworkBehaviour
                 characterTransform(characterType);
                 if (weaponType == "GreatSword")
                 {
+                    damage += strength*4;
                     damage = (damage + (damage * 0.2f));
                     damageReduction = 0.2f + (0.02f * expertise);
                     if (damageReduction > 0.6f)
@@ -61,6 +64,7 @@ public class playerMelee : NetworkBehaviour
                 }
                 if (weaponType == "Mace")
                 {
+                    damage += strength * 4;
                     damage = (damage - (damage * 0.15f));
                 }
                 moveCorouTine = StartCoroutine(MeleeAttackArc());

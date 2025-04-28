@@ -25,6 +25,7 @@ public class playerMovement : NetworkBehaviour
 
     Health health;
     playerMelee melee;
+    public string characterType;
     public override void Spawned()
     {
         
@@ -121,7 +122,14 @@ public class playerMovement : NetworkBehaviour
             }
             else
             {
-                PlayerSpeed = Speed;
+                if (characterType == "Fighter")
+                {
+                    PlayerSpeed = Speed + melee.speed;
+                }
+                else
+                {
+                    PlayerSpeed = Speed;
+                }
             }
         }
     }
@@ -190,7 +198,7 @@ public class playerMovement : NetworkBehaviour
                 }
                 else//playerAttack
                 {
-
+                    other.GetComponent<EnemyScript>().enemyDamaged((int)(damage + melee.damage + melee.strength + (melee.agility*2)));
                 }
             }
         }

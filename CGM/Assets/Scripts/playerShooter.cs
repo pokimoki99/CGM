@@ -1,4 +1,5 @@
 using Fusion;
+using Mono.Cecil;
 using System;
 using System.Collections;
 using System.Net.NetworkInformation;
@@ -24,6 +25,8 @@ public class playerShooter : NetworkBehaviour
 
     playerAttack playerStats;
     playerMovement playerMove;
+
+    public int magazine_size, reload_speed, expertise;
 
     private void Start()
     {
