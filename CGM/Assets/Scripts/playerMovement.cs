@@ -26,6 +26,8 @@ public class playerMovement : NetworkBehaviour
     Health health;
     playerMelee melee;
     public string characterType;
+
+    public Animator animator;
     public override void Spawned()
     {
         
@@ -108,14 +110,35 @@ public class playerMovement : NetworkBehaviour
             Camera.transform.position = new Vector3(transform.position.x +cameraPosx, 13 + cameraPosY, transform.position.z - 4 + cameraPosZ);
             //Camera.transform.rotation = new Quaternion(0, 0, 0, 0);
             Camera.transform.rotation = new Quaternion(0.8f + cameraRotx, +cameraRoty, +cameraRotz, 1 + cameraRotBob);
+
+
+            //camera adjustment for animation
+            Vector3 worldMove = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+
+            if (worldMove.sqrMagnitude > 0.01f)
+            {
+                Vector3 facingFor = transform.forward;
+
+                Vector3 localMove = transform.InverseTransformDirection(worldMove);
+                animator.SetFloat("Vert", localMove.z);
+                animator.SetFloat("Horz", localMove.x);
+            }
+            else
+            {
+                animator.SetFloat("Vert", 0);
+                animator.SetFloat("Horz", 0);
+            }
+
         }
         if (health.Downed())
         {
             PlayerSpeed = 0.1f;
             isDowned = true;
+            animator.SetBool("isDowned", true);
         }
         else
         {
+            animator.SetBool("isDowned", false);
             if (melee.weaponType == "GreatSword" || melee.weaponType == "Mace")
             {
                 PlayerSpeed = Speed - (Speed * melee.speedReduction);
@@ -132,6 +155,7 @@ public class playerMovement : NetworkBehaviour
                 }
             }
         }
+
     }
 
     
@@ -161,6 +185,7 @@ public class playerMovement : NetworkBehaviour
             {
                 playerAttack.WeaponChange(interact.weaponType, interact.damage, interact.fireRate, interact.ammo);
                 interact.publicDestroy();
+                animator.SetTrigger("pickUp");
             }
             else
             {
@@ -185,6 +210,7 @@ public class playerMovement : NetworkBehaviour
                 {
                     health.dealDamageRPC(damage - (damage * melee.damageReduction));
                     other.GetComponent<EnemyScript>().noDrop();
+                    animator.SetTrigger("Hit");
 
                     if (health.Downed())
                     {

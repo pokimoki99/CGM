@@ -32,6 +32,8 @@ public class playerMelee : NetworkBehaviour
     //attributes
     public int strength, vitality, agility, expertise, speed;
 
+    public Animator animator;
+
     private void Start()
     {
         characterTransform(characterType);
@@ -61,11 +63,17 @@ public class playerMelee : NetworkBehaviour
                     {
                         damageReduction = 0.6f;
                     }
+                    animator.SetBool("isAttacking2H", true);
                 }
                 if (weaponType == "Mace")
                 {
                     damage += strength * 4;
                     damage = (damage - (damage * 0.15f));
+                    animator.SetBool("isAttacking2H", true);
+                }
+                if (weaponType == "OH_Sword")
+                {
+                    animator.SetBool("isAttacking", true);
                 }
                 moveCorouTine = StartCoroutine(MeleeAttackArc());
 
@@ -77,10 +85,12 @@ public class playerMelee : NetworkBehaviour
     {
         if (Input.GetButton("Fire2") && weaponType == "OH_Sword") //rightclick block
         {
+            animator.SetBool("isDefending", true);
             return true;
         }
         else
         {
+            animator.SetBool("isDefending", true);
             return false;
         }
     }
@@ -121,5 +131,7 @@ public class playerMelee : NetworkBehaviour
         transform.localRotation = endRotation;
         isMoving = false;
         moveCorouTine = null;
+        animator.SetBool("isAttacking2H", false);
+        animator.SetBool("isAttacking", false);
     }
 }
