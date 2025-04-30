@@ -11,8 +11,8 @@ public class playerMovement : NetworkBehaviour
 
     private CharacterController _controller;
 
-    public float PlayerSpeed = 2f;
-    public float Speed = 2f;
+    public float PlayerSpeed;
+    public float Speed;
 
     public float JumpForce = 5f;
     public float GravityValue = -9.81f;
@@ -263,9 +263,9 @@ public class playerMovement : NetworkBehaviour
 
     private IEnumerator speedBoost(float duration)
     {
-        PlayerSpeed += 20;
+        Speed += 20;
         yield return new WaitForSeconds(duration);
-        PlayerSpeed -= 20;
+        Speed -= 20;
     }
     private IEnumerator fireRateBoost(float duration)
     {

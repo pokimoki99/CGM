@@ -27,6 +27,8 @@ public class playerShooter : NetworkBehaviour
     playerMovement playerMove;
 
     public int magazine_size, reload_speed, expertise;
+    Vector3 lastPos;
+    bool DoubleDMG = false;
 
     private void Start()
     {
@@ -45,6 +47,17 @@ public class playerShooter : NetworkBehaviour
                 delay = TickTimer.CreateFromSeconds(Runner, cooldownTime);
                 Shoot();
             }
+            Vector3 currentPos = transform.position;
+            float speed  = (currentPos - lastPos).magnitude / Time.deltaTime;
+            if (speed > 0)
+            {
+                DoubleDMG = false;
+            }
+            else
+            {
+                DoubleDMG = true;
+            }
+
         }
 
     }
@@ -92,7 +105,7 @@ public class playerShooter : NetworkBehaviour
             projectileObj.GetComponent<ProjectileCode>().Initialize(transform.forward * projectileSpeed);
             projectileObj.GetComponent<ProjectileCode>().damage = (int)(projectileDamage + playerStats.playerStrength);
             projectileObj.GetComponent<ProjectileCode>().maxDistance = projectileLifespan;
-            if (gameObject.GetComponent<Rigidbody>().linearVelocity.magnitude> 0)
+            if (DoubleDMG)
             {
                 projectileObj.GetComponent<ProjectileCode>().damage = (int)(projectileDamage + playerStats.playerStrength)*2;
             }

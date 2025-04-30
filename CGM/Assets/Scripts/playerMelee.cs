@@ -8,7 +8,7 @@ public class playerMelee : NetworkBehaviour
 {
     [Networked] private TickTimer delay { get; set; }
 
-    public GameObject WeaponObject;
+    public GameObject WeaponObject, TwoHandedSword, OneHandedSword, Mace, Dagger;
     public String characterType = "Melee";
     public String weaponType = "Pistol";
     public Transform arcEndPoint;
@@ -56,6 +56,7 @@ public class playerMelee : NetworkBehaviour
                 characterTransform(characterType);
                 if (weaponType == "GreatSword")
                 {
+                    weaponChange();
                     damage += strength*4;
                     damage = (damage + (damage * 0.2f));
                     damageReduction = 0.2f + (0.02f * expertise);
@@ -67,17 +68,51 @@ public class playerMelee : NetworkBehaviour
                 }
                 if (weaponType == "Mace")
                 {
+                    weaponChange();
                     damage += strength * 4;
                     damage = (damage - (damage * 0.15f));
                     animator.SetBool("isAttacking2H", true);
                 }
                 if (weaponType == "OH_Sword")
                 {
+                    weaponChange();
                     animator.SetBool("isAttacking", true);
                 }
                 moveCorouTine = StartCoroutine(MeleeAttackArc());
 
             }
+        }
+    }
+
+    void weaponChange()
+    {
+        if (weaponType == "GreatSword")
+        {
+            TwoHandedSword.gameObject.SetActive(true);
+            OneHandedSword.gameObject.SetActive(false);
+            Mace.gameObject.SetActive(false);
+            Dagger.gameObject.SetActive(false);
+        }
+        if (weaponType == "Mace")
+        {
+            TwoHandedSword.gameObject.SetActive(false);
+            OneHandedSword.gameObject.SetActive(false);
+            Mace.gameObject.SetActive(true);
+            Dagger.gameObject.SetActive(false);
+        }
+        if (weaponType == "OH_Sword")
+        {
+            TwoHandedSword.gameObject.SetActive(false);
+            OneHandedSword.gameObject.SetActive(true);
+            Mace.gameObject.SetActive(false);
+            Dagger.gameObject.SetActive(false);
+        }
+        if (weaponType == "Dagger")
+        {
+            TwoHandedSword.gameObject.SetActive(false);
+            OneHandedSword.gameObject.SetActive(false);
+            Mace.gameObject.SetActive(false);
+            Dagger.gameObject.SetActive(true);
         }
     }
 
@@ -107,11 +142,11 @@ public class playerMelee : NetworkBehaviour
     {
         isMoving = true;
         float elapsedTime = 0f;
-        startRotation = WeaponObject.transform.localRotation;
+        //startRotation = WeaponObject.transform.localRotation;
         while (elapsedTime < attackDuration)
         {
-            float rotationAngle = 90f * (elapsedTime / attackDuration);
-            WeaponObject.transform.localRotation = WeaponObject.transform.localRotation * Quaternion.Euler(0, 0, -rotationAngle);
+            //float rotationAngle = 90f * (elapsedTime / attackDuration);
+            //WeaponObject.transform.localRotation = WeaponObject.transform.localRotation * Quaternion.Euler(0, 0, -rotationAngle);
 
             elapsedTime += Time.deltaTime;
             yield return null;
@@ -120,15 +155,15 @@ public class playerMelee : NetworkBehaviour
 
         float returnTime = 0f;
         float returnDuration = 0.5f;
-        Quaternion endRotation = startRotation;
+        //Quaternion endRotation = startRotation;
         while (elapsedTime < returnDuration)
         {
-            WeaponObject.transform.localRotation = Quaternion.Slerp(WeaponObject.transform.localRotation, endRotation, returnTime / returnDuration);
+            //WeaponObject.transform.localRotation = Quaternion.Slerp(WeaponObject.transform.localRotation, endRotation, returnTime / returnDuration);
             returnTime += Time.deltaTime;
             yield return null;
         }
 
-        transform.localRotation = endRotation;
+        //transform.localRotation = endRotation;
         isMoving = false;
         moveCorouTine = null;
         animator.SetBool("isAttacking2H", false);
