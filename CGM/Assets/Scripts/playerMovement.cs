@@ -23,6 +23,9 @@ public class playerMovement : NetworkBehaviour
 
     public float cameraRotx, cameraRoty, cameraRotz, cameraRotBob, cameraPosx, cameraPosY, cameraPosZ = 0f; //testing values
 
+    public HealthSlider healthSlider;
+    public XP_Slider xp_slider;
+
     Health health;
     playerMelee melee;
     public override void Spawned()
@@ -57,6 +60,10 @@ public class playerMovement : NetworkBehaviour
                 Camera.GetComponent<FirstPersonCamera>().Target = transform;
             }
 
+            healthSlider = FindFirstObjectByType<HealthSlider>();
+
+            healthSlider.SetMaxHealth(health.networkedHealth);
+            healthSlider.SetHealth(health.networkedHealth);
         }
     }
 
@@ -70,6 +77,8 @@ public class playerMovement : NetworkBehaviour
         {
             Application.Quit();
         }
+
+        healthSlider.SetHealth(health.networkedHealth);
     }
 
     public override void FixedUpdateNetwork()

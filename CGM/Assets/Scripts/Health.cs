@@ -14,24 +14,30 @@ public class Health : NetworkBehaviour
     public override void Spawned()
     {
         HPManager.instance.registerPlayer(Object);
-        //UpdateUI();
+        UpdateUI();
+
+        //healthBarFill.SetMaxHealth(networkedHealth);
     }
     public override void Despawned(NetworkRunner runner, bool hasState)
     {
         HPManager.instance.removePlayer(Object);
     }
+
+    
     void healthChanged()
     {
         UpdateUI();
     }
 
+    
     public void UpdateUI()
     {
-        if (healthBarFill != null)
         {
             healthBarFill.fillAmount = networkedHealth / 100f;
         }
     }
+    
+
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void dealDamageRPC(float damage)
     {

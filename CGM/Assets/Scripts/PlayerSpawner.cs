@@ -7,6 +7,8 @@ public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
     public GameObject playerPrefab;
     public Transform redTeamStartPos, blueTeamStartPos;
     public HPManager hpManager;
+    public HealthSlider healthSlider;
+    public XP_Slider xp_slider;
 
     public void PlayerJoined(PlayerRef player)
     {
