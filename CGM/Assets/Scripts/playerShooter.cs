@@ -11,7 +11,7 @@ public class playerShooter : NetworkBehaviour
 
     public GameObject projectilePrefab;
 
-    public GameObject WeaponObject;
+    public GameObject WeaponObject, SMG, Rifle, Sniper, Shotgun;
     public String characterType = "Shooter";
     public String weaponType = "Pistol";
 
@@ -67,15 +67,17 @@ public class playerShooter : NetworkBehaviour
         if (HasStateAuthority)
         {
             Vector3 spawnPos = transform.position + transform.forward;
-            if (weaponType == "Pistol")
+            if (weaponType == "Sniper")
             {
                 cooldownTime = 0.5f;
+                weaponChange();
                 ProjSpawn(spawnPos);
             }
             if (weaponType == "Shotgun")
             {
                 cooldownTime = 0.5f;
                 ProjSpawn(spawnPos);
+                weaponChange();
                 for (int i = 0; i < 2; i++)
                 {
                     if (i % 2 == 0)
@@ -94,7 +96,45 @@ public class playerShooter : NetworkBehaviour
             {
                 cooldownTime = 0.0001f;
                 ProjSpawn(spawnPos);
+                weaponChange();
             }
+            if (weaponType == "SMG")
+            {
+                cooldownTime = 0.0001f;
+                ProjSpawn(spawnPos);
+                weaponChange();
+            }
+        }
+    }
+    void weaponChange()
+    {
+        if (weaponType == "SMG")
+        {
+            SMG.gameObject.SetActive(true);
+            Rifle.gameObject.SetActive(false);
+            Sniper.gameObject.SetActive(false);
+            Shotgun.gameObject.SetActive(false);
+        }
+        if (weaponType == "Sniper")
+        {
+            SMG.gameObject.SetActive(false);
+            Rifle.gameObject.SetActive(false);
+            Sniper.gameObject.SetActive(true);
+            Shotgun.gameObject.SetActive(false);
+        }
+        if (weaponType == "Rifle")
+        {
+            SMG.gameObject.SetActive(false);
+            Rifle.gameObject.SetActive(true);
+            Sniper.gameObject.SetActive(false);
+            Shotgun.gameObject.SetActive(false);
+        }
+        if (weaponType == "Shotgun")
+        {
+            SMG.gameObject.SetActive(false);
+            Rifle.gameObject.SetActive(false);
+            Sniper.gameObject.SetActive(false);
+            Shotgun.gameObject.SetActive(true);
         }
     }
     void ProjSpawn(Vector3 spawnPos)

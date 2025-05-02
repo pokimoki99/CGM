@@ -7,7 +7,7 @@ public class EnemyScript : NetworkBehaviour
     NavMeshAgent agent;
     GameObject[] players;
     GameObject closestPlayer;
-    public float agentSpeed = 10;
+    public float agentSpeed = 5;
     public RNGSystem rng;
     public bool poison = false;
     public float playerExpertise;
@@ -18,6 +18,7 @@ public class EnemyScript : NetworkBehaviour
     [Networked] private TickTimer bleedTimer { get; set; }
     [Networked] private TickTimer HemorrhageTimer { get; set; }
     [Networked] private TickTimer StunTimer { get; set; }
+    [Networked] private TickTimer attackTimer { get; set; }
 
     bool isHemorrhaging = false;
 
@@ -27,6 +28,8 @@ public class EnemyScript : NetworkBehaviour
     [Networked] public bool isAttacking { get; set; } = false;
     [Networked] public bool isStunned { get; set; } = false;
     public static event System.Action<int> onEnemyKilled;
+
+    public Animator animator;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -55,7 +58,24 @@ public class EnemyScript : NetworkBehaviour
     private void FixedUpdate()
     {
         closestPlayer = FindNearestPlayer();
-        agent.SetDestination(closestPlayer.transform.position);
+
+        if (closestPlayer != null && attackTimer.ExpiredOrNotRunning(Runner))
+        {
+            float dist = Vector3.Distance(agent.transform.position, closestPlayer.transform.position);
+            if (dist < 5f)
+            {
+                agent.isStopped = true;
+                attackTimer = TickTimer.CreateFromSeconds(Runner, 1f);
+                animator.SetFloat("MoveSpeed", 0);
+                animator.SetTrigger("Attack");
+            }
+            else
+            {
+                agent.isStopped = false;
+                animator.SetFloat("MoveSpeed", 1);
+                agent.SetDestination(closestPlayer.transform.position);
+            }
+        }
 
         if (isHemorrhaging && HemorrhageTimer.Expired(Runner))
         {
@@ -84,6 +104,7 @@ public class EnemyScript : NetworkBehaviour
             if (health <= 0)
             {
                 Die();
+                animator.SetTrigger("Dead");
             }
         }  
     }

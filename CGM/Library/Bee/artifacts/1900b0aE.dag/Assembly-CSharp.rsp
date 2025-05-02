@@ -468,6 +468,9 @@
 "Assets/StarterAssets/Mobile/Scripts/VirtualInputs/UIVirtualButton.cs"
 "Assets/StarterAssets/Mobile/Scripts/VirtualInputs/UIVirtualJoystick.cs"
 "Assets/StarterAssets/Mobile/Scripts/VirtualInputs/UIVirtualTouchZone.cs"
+"Assets/Supercyan Character Pack Zombie Sample/Scripts/ZombieCameraLogic.cs"
+"Assets/Supercyan Character Pack Zombie Sample/Scripts/ZombieCharacterControl.cs"
+"Assets/Supercyan Character Pack Zombie Sample/Scripts/ZombieFree.cs"
 -langversion:9.0
 /unsafe+
 /deterministic
