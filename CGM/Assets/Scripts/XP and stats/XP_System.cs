@@ -17,6 +17,7 @@ public class XP_System : NetworkBehaviour
         if (Object.HasStateAuthority)
         {
             EnemyScript.onEnemyKilled += addExperience;
+            UIManager.Singleton.localXP= this;
         }
         popUp = FindFirstObjectByType<PopUpSelection>();
         popUp.xP_System = gameObject.GetComponent<XP_System>();

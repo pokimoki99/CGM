@@ -16,6 +16,11 @@ public class Health : NetworkBehaviour
         HPManager.instance.registerPlayer(Object);
         UpdateUI();
 
+        if (HasInputAuthority)
+        {
+            UIManager.Singleton.localHealth = this;
+        }
+
         //healthBarFill.SetMaxHealth(networkedHealth);
     }
     public override void Despawned(NetworkRunner runner, bool hasState)

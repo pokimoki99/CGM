@@ -456,6 +456,7 @@
 "Assets/Scripts/ProjectileCode.cs"
 "Assets/Scripts/RNGSystem.cs"
 "Assets/Scripts/TopDownCamera.cs"
+"Assets/Scripts/UIManager.cs"
 "Assets/Scripts/XP and stats/PopUpSelection.cs"
 "Assets/Scripts/XP and stats/XP_Slider.cs"
 "Assets/Scripts/XP and stats/XP_System.cs"

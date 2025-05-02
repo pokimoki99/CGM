@@ -20,7 +20,6 @@ public class HealthSlider : MonoBehaviour
         {
             healthSlider.maxValue = health.networkedHealth;
         }
-        
 
         hpManager = FindFirstObjectByType<HPManager>();
 

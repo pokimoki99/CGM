@@ -2,6 +2,7 @@ using Fusion;
 using System.Collections;
 //using UnityEditor.Timeline;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class playerMovement : NetworkBehaviour
@@ -60,10 +61,10 @@ public class playerMovement : NetworkBehaviour
                 Camera.GetComponent<FirstPersonCamera>().Target = transform;
             }
 
-            healthSlider = FindFirstObjectByType<HealthSlider>();
+            //healthSlider = FindFirstObjectByType<HealthSlider>();
 
-            healthSlider.SetMaxHealth(health.networkedHealth);
-            healthSlider.SetHealth(health.networkedHealth);
+            //healthSlider.SetMaxHealth(health.networkedHealth);
+            //healthSlider.SetHealth(health.networkedHealth);
         }
     }
 
@@ -78,7 +79,7 @@ public class playerMovement : NetworkBehaviour
             Application.Quit();
         }
 
-        healthSlider.SetHealth(health.networkedHealth);
+        //healthSlider.SetHealth(health.networkedHealth);
     }
 
     public override void FixedUpdateNetwork()
