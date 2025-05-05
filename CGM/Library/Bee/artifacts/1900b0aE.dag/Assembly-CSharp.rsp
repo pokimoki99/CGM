@@ -439,6 +439,8 @@
 -analyzer:"A:/Unity Temp/6000.0.5f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll"
 -analyzer:"A:/Unity Temp/6000.0.5f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 -analyzer:"A:/Unity Temp/6000.0.5f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.UIToolkit.SourceGenerator.dll"
+"Assets/B2/Sci-Fi Base/Scripts/Rotator.cs"
+"Assets/B2/_Creepy_Cat/_3D Scifi Kit Starter Kit_HD/_Scripts/Turn_Move.cs"
 "Assets/Scripts/Boss/BossScript.cs"
 "Assets/Scripts/EnemyScript.cs"
 "Assets/Scripts/enemySpawner.cs"
@@ -468,9 +470,11 @@
 "Assets/StarterAssets/Mobile/Scripts/VirtualInputs/UIVirtualButton.cs"
 "Assets/StarterAssets/Mobile/Scripts/VirtualInputs/UIVirtualJoystick.cs"
 "Assets/StarterAssets/Mobile/Scripts/VirtualInputs/UIVirtualTouchZone.cs"
+"Assets/StarterAssets/ThirdPersonController/Scripts/ThirdPersonController.cs"
 "Assets/Supercyan Character Pack Zombie Sample/Scripts/ZombieCameraLogic.cs"
 "Assets/Supercyan Character Pack Zombie Sample/Scripts/ZombieCharacterControl.cs"
 "Assets/Supercyan Character Pack Zombie Sample/Scripts/ZombieFree.cs"
+"Assets/TutorialInfo/Scripts/Readme.cs"
 -langversion:9.0
 /unsafe+
 /deterministic
